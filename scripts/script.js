@@ -1,8 +1,8 @@
-import {renderGameboy} from './gameboy.js';
+import {renderAbout} from './about.js';
 import {renderHeader} from './header.js';
 function main(){
     renderHeader();
-    renderGameboy();
+    renderAbout();
 }
 
 main();

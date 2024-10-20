@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 
 
 export function renderHeader(){
@@ -9,27 +10,56 @@ export function renderHeader(){
     nameRenderer.setPixelRatio(window.devicePixelRatio);
 
     let nameScene = new THREE.Scene();
-    nameScene.background = new THREE.Color(0xFFFFFF);
+    nameScene.background = new THREE.Color(0x222831);
 
     let nameCamera = new THREE.PerspectiveCamera(75, nameCanvas.clientWidth / nameCanvas.clientHeight, 0.1, 1000);
+    nameCamera.position.set(0,0,2.2);
+    nameCamera.lookAt(0,0,0);
 
-    const geometry = new THREE.BoxGeometry(1,1,1);
-    const material = new THREE.MeshBasicMaterial({color:0xff0000});
-    const cube = new THREE.Mesh(geometry, material);
+    // Add a soft ambient light
+    let ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3); // Lowered intensity for subtle ambient light
+    nameScene.add(ambientLight);
 
-    nameScene.add(cube);
+    let earth;
+    const gltfLoader = new GLTFLoader();
+    const urlEarth = './assets/models/earth/scene.gltf';
+    gltfLoader.load(urlEarth, (gltf) =>{
+        earth = gltf.scene;
+        earth.rotateZ(-0.3);
+        earth.rotateX(0.1);
+        nameScene.add(earth);
+    });
 
-    nameCamera.position.set(0,0,3);
-    nameCamera.lookAt(0,0.3,0);
+    let asteroid;
+    const urlAsteroid = './assets/models/asteroid/scene.gltf';
+    gltfLoader.load(urlAsteroid, (gltf) =>{
+        asteroid = gltf.scene;
+        asteroid.scale.set(0.3, 0.3, 0.3);
+        nameScene.add(asteroid);
+    })
 
-    nameRenderer.render(nameScene, nameCamera);
-
+    let time = 0.0;
+    let orbitRadius = 1.5;
     function animate(){
-        cube.rotateX(0.01);
-        cube.rotateY(0.01);
+      
+        if(earth){
+            earth.rotateY(0.01);
+            nameScene.add(earth);
+        }
 
+        if(asteroid){
+            time += 0.03;
+            asteroid.position.x = orbitRadius * Math.cos(time);
+            asteroid.position.z = orbitRadius * Math.sin(time);
+            asteroid.position.y = 0.3 * Math.sin(time * 2);
+
+            asteroid.rotateY(0.02);
+
+            nameScene.add(asteroid);
+        }
         nameRenderer.render(nameScene, nameCamera);
         requestAnimationFrame(animate);
     }
+
     animate();
 }

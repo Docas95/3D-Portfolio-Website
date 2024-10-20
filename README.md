@@ -1,2 +1,2 @@
 # 3D-Portfolio-Website
-A 3D Portfolio website build using Three.js.
+Contains the same information as my cv, but fancier looking.
