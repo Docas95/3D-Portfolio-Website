@@ -22,7 +22,7 @@ export function renderHeader(){
 
     let earth;
     const gltfLoader = new GLTFLoader();
-    const urlEarth = '/models/earth/scene.gltf';
+    const urlEarth = './models/earth/scene.gltf';
     gltfLoader.load(urlEarth, (gltf) =>{
         earth = gltf.scene;
         earth.rotateZ(-0.3);
@@ -31,7 +31,7 @@ export function renderHeader(){
     });
 
     let asteroid;
-    const urlAsteroid = '/models/asteroid/scene.gltf';
+    const urlAsteroid = './models/asteroid/scene.gltf';
     gltfLoader.load(urlAsteroid, (gltf) =>{
         asteroid = gltf.scene;
         asteroid.scale.set(0.3, 0.3, 0.3);
