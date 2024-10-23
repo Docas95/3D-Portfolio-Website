@@ -16,8 +16,7 @@ export function renderHeader(){
     nameCamera.position.set(0,0,2.2);
     nameCamera.lookAt(0,0,0);
 
-    // Add a soft ambient light
-    let ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3); // Lowered intensity for subtle ambient light
+    let ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.4);
     nameScene.add(ambientLight);
 
     let earth;
@@ -38,22 +37,24 @@ export function renderHeader(){
         nameScene.add(asteroid);
     })
 
+    let rotationSpeed = 0.00001 * window.innerWidth;
+
     let time = 0.0;
     let orbitRadius = 1.5;
     function animate(){
       
         if(earth){
-            earth.rotateY(0.01);
+            earth.rotateY(rotationSpeed);
             nameScene.add(earth);
         }
 
         if(asteroid){
-            time += 0.03;
+            time += rotationSpeed * 2;
             asteroid.position.x = orbitRadius * Math.cos(time);
             asteroid.position.z = orbitRadius * Math.sin(time);
             asteroid.position.y = 0.3 * Math.sin(time * 2);
 
-            asteroid.rotateY(0.02);
+            asteroid.rotateY(rotationSpeed * 2);
 
             nameScene.add(asteroid);
         }

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 
 export function renderAbout(){
     let aboutCanvas = document.querySelector("#aboutCanvas");
@@ -11,21 +12,29 @@ export function renderAbout(){
     aboutScene.background = new THREE.Color(0x31363F);
 
     let aboutCamera = new THREE.PerspectiveCamera(75, aboutCanvas.clientWidth / aboutCanvas.clientHeight, 0.1, 1000);
-
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({color:0x00ff00});
-    const cube = new THREE.Mesh(geometry, material);
-
-    aboutScene.add(cube);
-
-    aboutCamera.position.set(0, 0, 2);
+    aboutCamera.position.set(0, 0, 0.8);
     aboutCamera.lookAt(0,0,0);
 
-    aboutRenderer.render(aboutScene, aboutCamera);
+    let ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.5);
+    aboutScene.add(ambientLight);
 
+    let ufo;
+    const gltfLoader = new GLTFLoader();
+    const ufoUrl = './models/ufo/scene.gltf';
+    gltfLoader.load(ufoUrl, (gltf) => {
+        ufo = gltf.scene;
+        ufo.rotateX(0.8);
+        aboutScene.add(ufo);
+    });
+
+    const speed = 0.00001 * window.innerWidth;
     function animate(){
-        cube.rotateX(0.01);
-        cube.rotateY(0.01);
+        
+        if(ufo){
+            ufo.rotateY(speed * 4);
+            ufo.position.y = Math.sin(Date.now() * 0.001) / 10;
+            aboutScene.add(ufo);
+        }
         
         aboutRenderer.render(aboutScene, aboutCamera);
         requestAnimationFrame(animate);

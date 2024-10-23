@@ -110,7 +110,7 @@ img{
 @media only screen and (max-width: 600px) {
     section{
         grid-template-columns: 1fr;
-        margin-bottom: 50vh;
+        margin-bottom: 30vh;
 
         border-top: 0.5vw solid #EEEEEE;
         border-bottom: 0.5vw solid #EEEEEE;
@@ -142,6 +142,6 @@ img{
     }
     
     #nameCanvas{
-        margin-bottom: 50vh;
+        margin-bottom: 30vh;
     }
 }
